@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gringotts/screens/contact_form.dart';
 
 class ContactsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de Contatos'),
+        title: Text('Contact List'),
       ),
       body: ListView(
         children: <Widget>[
@@ -28,7 +29,10 @@ class ContactsList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ContactForm(),
+          ),
+          ).then((newContact) => debugPrint(newContact.toString()),);
         },
         child: Icon(Icons.add),
       ),
