@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gringotts/database/app_database.dart';
 import 'package:gringotts/models/contact.dart';
 
 class ContactForm extends StatefulWidget {
-
   @override
   _ContactFormState createState() => _ContactFormState();
 }
@@ -10,7 +10,8 @@ class ContactForm extends StatefulWidget {
 class _ContactFormState extends State<ContactForm> {
   final TextEditingController _nameController = TextEditingController();
 
-  final TextEditingController _accountNumberController = TextEditingController();
+  final TextEditingController _accountNumberController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class _ContactFormState extends State<ContactForm> {
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: TextField(
-                controller: _nameController,
+                  controller: _nameController,
                   decoration: InputDecoration(
                     labelText: 'Full Name',
                   ),
@@ -54,12 +55,11 @@ class _ContactFormState extends State<ContactForm> {
                   child: Text('Create'),
                   onPressed: () {
                     final String name = _nameController.text;
-                    final int accountNumber = int.tryParse(_accountNumberController.text);
+                    final int accountNumber =
+                        int.tryParse(_accountNumberController.text);
 
-                    if(name != null && accountNumber != null) {
-                      final Contact contact = Contact(0, name, accountNumber);
-                      Navigator.pop(context, contact);
-                    }
+                    final Contact newContact = Contact(0, name, accountNumber);
+                    save(newContact).then<bool>((id) => Navigator.pop(context));
                   },
                 ),
               ),
