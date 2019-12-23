@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gringotts/database/app_database.dart';
+import 'package:gringotts/database/dao/contact_dao.dart';
 import 'package:gringotts/models/contact.dart';
 
 class ContactForm extends StatefulWidget {
@@ -8,6 +9,8 @@ class ContactForm extends StatefulWidget {
 }
 
 class _ContactFormState extends State<ContactForm> {
+  
+  final ContactDAO _dao = ContactDAO();
   final TextEditingController _nameController = TextEditingController();
 
   final TextEditingController _accountNumberController =
@@ -59,7 +62,7 @@ class _ContactFormState extends State<ContactForm> {
                         int.tryParse(_accountNumberController.text);
 
                     final Contact newContact = Contact(0, name, accountNumber);
-                    save(newContact).then<bool>((id) => Navigator.pop(context));
+                    _dao.save(newContact).then<bool>((id) => Navigator.pop(context));
                   },
                 ),
               ),

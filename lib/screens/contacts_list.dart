@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gringotts/database/app_database.dart';
+import 'package:gringotts/database/dao/contact_dao.dart';
 import 'package:gringotts/models/contact.dart';
 import 'package:gringotts/screens/contact_form.dart';
 
@@ -11,6 +11,8 @@ class ContactsList extends StatefulWidget {
 }
 
 class _ContactsListState extends State<ContactsList> {
+
+  final ContactDAO _dao = ContactDAO();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +21,7 @@ class _ContactsListState extends State<ContactsList> {
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: List(),
-        future: findAll(),
+        future: _dao.findAll(),
         builder: (context, snapshot) {
 
           switch(snapshot.connectionState) {
