@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gringotts/screens/contacts_list.dart';
+import 'package:gringotts/screens/transactions_list.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -32,7 +33,7 @@ class Dashboard extends StatelessWidget {
                   'Transaction Feed',
                   Icons.monetization_on,
                   onCLick: () {
-                    _showContactList(context);
+                    _showTransactionsList(context);
                   },
                 ),
               ],
@@ -89,6 +90,14 @@ _showContactList(BuildContext context) {
   Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => ContactsList(),
+    ),
+  );
+}
+
+_showTransactionsList(BuildContext context) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => TransactionsList(),
     ),
   );
 }
