@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gringotts/database/app_database.dart';
 import 'package:gringotts/database/dao/contact_dao.dart';
 import 'package:gringotts/models/contact.dart';
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:gringotts/screens/contact_form.dart';
-import 'package:gringotts/screens/contacts_list.dart';
+import 'package:gringotts/http/webclient.dart';
 import 'package:gringotts/screens/dashboard.dart';
 
-void main() => runApp(GringottsApp());
+void main() {
+  runApp(GringottsApp());
+  findAll();
+}
 
 class GringottsApp extends StatelessWidget {
   // This widget is the root of your application.
