@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gringotts/http/webclient.dart';
+import 'package:gringotts/http/clients/TransactionWebClient.dart';
 import 'package:gringotts/models/contact.dart';
 import 'package:gringotts/models/transaction.dart';
 
@@ -13,7 +13,9 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
+
   final TextEditingController _valueController = TextEditingController();
+  final TransactionWebClient _transactionWebClient = TransactionWebClient();
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     child: Text('Transfer'), onPressed: () {
                       final double value = double.tryParse(_valueController.text);
                       final transactionCreated = Transaction(value, widget.contact);
-                      save(transactionCreated).then((transaction) {
+                      _transactionWebClient.save(transactionCreated).then((transaction) {
                          if(transaction != null) {
                            Navigator.pop(context);
                          }

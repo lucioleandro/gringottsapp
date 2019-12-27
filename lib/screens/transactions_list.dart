@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gringotts/components/centered_message.dart';
 import 'package:gringotts/components/progress.dart';
-import 'package:gringotts/http/webclient.dart';
+import 'package:gringotts/http/clients/TransactionWebClient.dart';
 import 'package:gringotts/models/transaction.dart';
 
 class TransactionsList extends StatefulWidget {
@@ -10,7 +10,9 @@ class TransactionsList extends StatefulWidget {
 }
 
 class _TransactionsListState extends State<TransactionsList> {
+
   final List<Transaction> transactions = List();
+  final TransactionWebClient _transactionWebClient = TransactionWebClient();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class _TransactionsListState extends State<TransactionsList> {
       ),
       body: FutureBuilder<List<Transaction>>(
           initialData: List(),
-          future: findAll(),
+          future: _transactionWebClient.findAll(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
