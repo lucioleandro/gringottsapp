@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gringotts/http/webclient.dart';
 import 'package:gringotts/screens/dashboard.dart';
 
-void main() {
-  runApp(GringottsApp());
-  findAll();
-}
+void main() => runApp(GringottsApp());
+
 
 class GringottsApp extends StatelessWidget {
   // This widget is the root of your application.

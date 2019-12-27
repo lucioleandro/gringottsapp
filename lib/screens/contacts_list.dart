@@ -4,16 +4,16 @@ import 'package:gringotts/components/progress.dart';
 import 'package:gringotts/database/dao/contact_dao.dart';
 import 'package:gringotts/models/contact.dart';
 import 'package:gringotts/screens/contact_form.dart';
+import 'package:gringotts/screens/transaction_form.dart';
 
 class ContactsList extends StatefulWidget {
-
   @override
   _ContactsListState createState() => _ContactsListState();
 }
 
 class _ContactsListState extends State<ContactsList> {
-
   final ContactDAO _dao = ContactDAO();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +24,7 @@ class _ContactsListState extends State<ContactsList> {
         initialData: List(),
         future: _dao.findAll(),
         builder: (context, snapshot) {
-
-          switch(snapshot.connectionState) {
-
+          switch (snapshot.connectionState) {
             case ConnectionState.none:
               break;
             case ConnectionState.waiting:
@@ -39,7 +37,13 @@ class _ContactsListState extends State<ContactsList> {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final Contact contact = contacts[index];
-                  return _ContactItem(contact);
+                  return _ContactItem(contact, onCLick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => TransactionForm(contact),
+                      ),
+                    );
+                  });
                 },
                 itemCount: contacts.length,
               );
@@ -49,16 +53,13 @@ class _ContactsListState extends State<ContactsList> {
           return Text('Unknoun Error');
         },
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context)
-              .push(
-                MaterialPageRoute(
-                  builder: (context) => ContactForm(),
-                ),
-              );
-
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ContactForm(),
+            ),
+          );
         },
         child: Icon(Icons.add),
       ),
@@ -68,13 +69,15 @@ class _ContactsListState extends State<ContactsList> {
 
 class _ContactItem extends StatelessWidget {
   final Contact contact;
+  final Function onCLick;
 
-  const _ContactItem(this.contact);
+  const _ContactItem(this.contact, {@required this.onCLick});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        onTap: () => onCLick(),
         title: Text(
           contact.name,
           style: TextStyle(
