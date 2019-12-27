@@ -56,7 +56,7 @@ Transaction _decodeTransaction(Map<String, dynamic> element) {
       Contact(
         0,
         element['contact']['name'],
-        element['contact']['accouuntNumber'],
+        element['contact']['accountNumber'],
       ));
   return transaction;
 }

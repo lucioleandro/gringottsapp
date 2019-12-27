@@ -4,7 +4,12 @@ import 'package:gringotts/components/progress.dart';
 import 'package:gringotts/http/webclient.dart';
 import 'package:gringotts/models/transaction.dart';
 
-class TransactionsList extends StatelessWidget {
+class TransactionsList extends StatefulWidget {
+  @override
+  _TransactionsListState createState() => _TransactionsListState();
+}
+
+class _TransactionsListState extends State<TransactionsList> {
   final List<Transaction> transactions = List();
 
   @override
@@ -28,7 +33,7 @@ class TransactionsList extends StatelessWidget {
               case ConnectionState.done:
                 final List<Transaction> transactions = snapshot.data;
                 if (transactions.isNotEmpty) {
-                  ListView.builder(
+                  return ListView.builder(
                     itemBuilder: (context, index) {
                       final Transaction transaction = transactions[index];
                       return _TransactionItem(transaction);
@@ -42,7 +47,10 @@ class TransactionsList extends StatelessWidget {
                 );
                 break;
             }
-            return Text('Unknoun Error');
+            return CenteredMessage(
+              'Unknoun Error',
+              icon: Icons.error,
+            );
           }),
     );
   }

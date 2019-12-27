@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gringotts/http/webclient.dart';
 import 'package:gringotts/models/contact.dart';
 import 'package:gringotts/models/transaction.dart';
 
@@ -59,6 +60,11 @@ class _TransactionFormState extends State<TransactionForm> {
                     child: Text('Transfer'), onPressed: () {
                       final double value = double.tryParse(_valueController.text);
                       final transactionCreated = Transaction(value, widget.contact);
+                      save(transactionCreated).then((transaction) {
+                         if(transaction != null) {
+                           Navigator.pop(context);
+                         }
+                      });
                   },
                   ),
                 ),
