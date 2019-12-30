@@ -17,7 +17,7 @@ class TransactionWebClient {
   }
 
   Future<Transaction> save(Transaction transaction) async {
-    Map<String, Object> transactionMap = _toMap(transaction);
+    Map<String, Object> transactionMap = transaction.toJson();
     var future = await client.post(API_URL + '/transactions',
         headers: {
           'Content-type': 'application/json',
@@ -26,17 +26,6 @@ class TransactionWebClient {
         body: jsonEncode(transactionMap));
 
     return _toTransaction(jsonDecode(future.body));
-  }
-
-  Map<String, Object> _toMap(Transaction transaction) {
-     var transactionMap = {
-      'value' : transaction.value,
-      'contact' : {
-        'name' : transaction.contact.name,
-        'accountNumber' : transaction.contact.accountNumber
-      }
-    };
-    return transactionMap;
   }
 
   List<Transaction> _toTransactions(Response future) {
