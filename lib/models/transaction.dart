@@ -15,7 +15,7 @@ class Transaction {
 
   Map<String, dynamic> toJson() => {
     'value': value,
-    'concat': contact.toJson()
+    'contact': contact.toJson()
   };
 
   @override

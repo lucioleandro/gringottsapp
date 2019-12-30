@@ -4,14 +4,8 @@ import 'package:gringotts/components/progress.dart';
 import 'package:gringotts/http/clients/TransactionWebClient.dart';
 import 'package:gringotts/models/transaction.dart';
 
-class TransactionsList extends StatefulWidget {
-  @override
-  _TransactionsListState createState() => _TransactionsListState();
-}
+class TransactionsList extends StatelessWidget {
 
-class _TransactionsListState extends State<TransactionsList> {
-
-  final List<Transaction> transactions = List();
   final TransactionWebClient _transactionWebClient = TransactionWebClient();
 
   @override
@@ -21,7 +15,6 @@ class _TransactionsListState extends State<TransactionsList> {
         title: Text('Transactions'),
       ),
       body: FutureBuilder<List<Transaction>>(
-          initialData: List(),
           future: _transactionWebClient.findAll(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
@@ -33,16 +26,23 @@ class _TransactionsListState extends State<TransactionsList> {
               case ConnectionState.active:
                 break;
               case ConnectionState.done:
-                final List<Transaction> transactions = snapshot.data;
-                if (transactions.isNotEmpty) {
-                  return ListView.builder(
-                    itemBuilder: (context, index) {
-                      final Transaction transaction = transactions[index];
-                      return _TransactionItem(transaction);
-                    },
-                    itemCount: transactions.length,
-                  );
+                if(snapshot.hasError) {
+                  debugPrint('ERROR: ${snapshot.error}');
                 }
+                if (snapshot.hasData) {
+                  final List<Transaction> transactions = snapshot.data;
+                  if (transactions.isNotEmpty) {
+                    final List<Transaction> transactions = snapshot.data;
+                    return ListView.builder(
+                      itemBuilder: (context, index) {
+                        final Transaction transaction = transactions[index];
+                        return _TransactionItem(transaction);
+                      },
+                      itemCount: transactions.length,
+                    );
+                  }
+                }
+
                 return CenteredMessage(
                   'No transactions found',
                   icon: Icons.clear,
