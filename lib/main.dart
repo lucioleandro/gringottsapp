@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gringotts/components/transaction_auth_dialog.dart';
 import 'package:gringotts/screens/dashboard.dart';
 
 void main() => runApp(GringottsApp());
@@ -17,7 +18,7 @@ class GringottsApp extends StatelessWidget {
             textTheme: ButtonTextTheme.primary,
           ),
       ),
-      home: Dashboard(),
+      home: TransactionAuthDialog(),
     );
   }
 }
