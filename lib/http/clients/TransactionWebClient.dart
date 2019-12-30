@@ -6,11 +6,10 @@ import 'package:http/http.dart';
 import '../webclient.dart';
 
 class TransactionWebClient {
-
   Future<List<Transaction>> findAll() async {
     var future = await client.get(API_URL + '/transactions').timeout(
-      Duration(seconds: 5),
-    );
+          Duration(seconds: 5),
+        );
     List<Transaction> transactions = _toTransactions(future);
 
     return transactions;
@@ -25,22 +24,16 @@ class TransactionWebClient {
         },
         body: jsonEncode(transactionMap));
 
-    return _toTransaction(jsonDecode(future.body));
+    return Transaction.fromJson(jsonDecode(future.body));
   }
 
   List<Transaction> _toTransactions(Response future) {
     var decodedJson = jsonDecode(future.body);
-    final List<Transaction> transactions = List();
 
-    for (Map<String, dynamic> element in decodedJson) {
-      Transaction transaction = _toTransaction(element);
-      transactions.add(transaction);
-    }
+    final List<Transaction> transactions = decodedJson.map((dynamic json) =>
+       Transaction.fromJson(json)
+    ).toList();
+
     return transactions;
-  }
-
-  Transaction _toTransaction(Map<String, dynamic> element) {
-    var transaction = Transaction.fromJson(element);
-    return transaction;
   }
 }
