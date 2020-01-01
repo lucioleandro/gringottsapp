@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gringotts/components/response_dialog.dart';
 import 'package:gringotts/components/transaction_auth_dialog.dart';
@@ -86,16 +88,21 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _save(Transaction transactionCreated, String password,
       BuildContext context) async {
-
     var transaction = await _transactionWebClient
         .save(transactionCreated, password)
         .catchError((e) {
-           showDialog(
-            context: context,
-            builder: (contextDialog) {
-             return FailureDialog(e.message);
-            });
-    }, test: (e) => e is Exception);
+      showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return FailureDialog('Timeout submitting the transaction');
+          });
+    }, test: (e) => e is TimeoutException).catchError((e) {
+      showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return FailureDialog(e.message);
+          });
+    }, test: (e) => e is HttpException);
 
     if (transaction != null) {
       await showDialog(

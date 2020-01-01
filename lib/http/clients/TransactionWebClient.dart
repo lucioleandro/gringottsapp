@@ -33,11 +33,9 @@ class TransactionWebClient {
      return Transaction.fromJson(jsonDecode(future.body));
     }
 
-   _throwHttpError(future.statusCode);
+   throw HttpException(_statusCodeResponses[future.statusCode]);
 
   }
-
-  void _throwHttpError(int statusCode) =>throw Exception(_statusCodeResponses[statusCode]);
 
   List<Transaction> _toTransactions(Response future) {
     final List<dynamic> decodedJson = jsonDecode(future.body);
@@ -46,4 +44,10 @@ class TransactionWebClient {
        Transaction.fromJson(json)
     ).toList();
   }
+}
+
+class HttpException implements Exception {
+  final String message;
+
+  HttpException(this.message);
 }

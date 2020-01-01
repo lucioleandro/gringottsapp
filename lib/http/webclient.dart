@@ -6,6 +6,5 @@ const API_URL = 'http://172.29.40.69:8080';
 
 var client = HttpClientWithInterceptor.build(
   interceptors: [LoggingInterceptor()],
+  requestTimeout: Duration(seconds: 5),
 );
-
-
