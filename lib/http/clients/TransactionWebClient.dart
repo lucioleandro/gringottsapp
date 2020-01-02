@@ -9,7 +9,8 @@ class TransactionWebClient {
 
   static final Map<int, String> _statusCodeResponses = {
     400 : 'There was a error submitting transaction',
-    401 : 'Autentication failed'
+    401 : 'Autentication failed',
+    409 : 'Transaction Always exists'
   };
 
   Future<List<Transaction>> findAll() async {
@@ -33,8 +34,15 @@ class TransactionWebClient {
      return Transaction.fromJson(jsonDecode(future.body));
     }
 
-   throw HttpException(_statusCodeResponses[future.statusCode]);
+   throw HttpException(_getMessage(future.statusCode));
 
+  }
+
+  String _getMessage(int statusCode) {
+    if(_statusCodeResponses.containsKey(statusCode)) {
+      return _statusCodeResponses[statusCode];
+    }
+    return 'Unknown error';
   }
 
   List<Transaction> _toTransactions(Response future) {

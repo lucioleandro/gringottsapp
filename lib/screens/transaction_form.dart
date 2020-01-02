@@ -6,10 +6,10 @@ import 'package:gringotts/components/transaction_auth_dialog.dart';
 import 'package:gringotts/http/clients/TransactionWebClient.dart';
 import 'package:gringotts/models/contact.dart';
 import 'package:gringotts/models/transaction.dart';
+import 'package:uuid/uuid.dart';
 
 class TransactionForm extends StatefulWidget {
   final Contact contact;
-
   TransactionForm(this.contact);
 
   @override
@@ -19,6 +19,7 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
   final TransactionWebClient _transactionWebClient = TransactionWebClient();
+  final String transactionId = Uuid().v4();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class _TransactionFormState extends State<TransactionForm> {
                         final double value =
                             double.tryParse(_valueController.text);
                         final transactionCreated =
-                            Transaction(value, widget.contact);
+                            Transaction(transactionId,value, widget.contact);
                         showDialog(
                           context: context,
                           builder: (contextDialog) => TransactionAuthDialog(
