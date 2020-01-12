@@ -2,7 +2,7 @@ import 'package:http_interceptor/http_interceptor.dart';
 
 import 'interceptors/LoggingInterceptor.dart';
 
-const API_URL = 'http://172.29.40.69:8080';
+const API_URL = 'http://192.168.100.6:8080';
 
 var client = HttpClientWithInterceptor.build(
   interceptors: [LoggingInterceptor()],

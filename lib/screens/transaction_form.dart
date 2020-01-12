@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:gringotts/components/progress.dart';
 import 'package:gringotts/components/response_dialog.dart';
 import 'package:gringotts/components/transaction_auth_dialog.dart';
 import 'package:gringotts/http/clients/TransactionWebClient.dart';
@@ -21,6 +22,8 @@ class _TransactionFormState extends State<TransactionForm> {
   final TransactionWebClient _transactionWebClient = TransactionWebClient();
   final String transactionId = Uuid().v4();
 
+  bool _isSending = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +36,13 @@ class _TransactionFormState extends State<TransactionForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Visibility(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Progress(message: 'Sending...'),
+                ),
+                visible: _isSending,
+              ),
               Text(
                 widget.contact.name,
                 style: TextStyle(
@@ -94,14 +104,13 @@ class _TransactionFormState extends State<TransactionForm> {
       password,
       context,
     );
-
     _showSuccessMessage(transaction, context);
   }
 
   Future _showSuccessMessage(
       Transaction transaction, BuildContext context) async {
     if (transaction != null) {
-      showDialog(
+      await showDialog(
           context: context,
           builder: (contextDialog) {
             return SuccessDialog('Successful transaction');
@@ -113,6 +122,11 @@ class _TransactionFormState extends State<TransactionForm> {
 
   Future<Transaction> _send(Transaction transactionCreated, String password,
       BuildContext context) async {
+
+    setState(() {
+      _isSending = true;
+    });
+
     var transaction = await _transactionWebClient
         .save(transactionCreated, password)
         .catchError((e) {
@@ -122,6 +136,10 @@ class _TransactionFormState extends State<TransactionForm> {
       _showFailureMessage(context, message: e.message);
     }, test: (e) => e is HttpException).catchError((e) {
       _showFailureMessage(context);
+    }).whenComplete(() {
+      setState(() {
+        _isSending = false;
+      });
     });
     return transaction;
   }
