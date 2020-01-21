@@ -37,7 +37,7 @@ class Dashboard extends StatelessWidget {
                       ),
                       FeatureItem(
                         'Transaction Feed',
-                        Icons.monetization_on,
+                        Icons.description,
                         onCLick: () {
                           _showTransactionsList(context);
                         },
@@ -60,6 +60,10 @@ class FeatureItem extends StatelessWidget {
   final Function onCLick;
 
   FeatureItem(this._legend, this._icon, {@required this.onCLick});
+
+
+  String get legend => _legend;
+  IconData get icon => _icon;
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +97,8 @@ class FeatureItem extends StatelessWidget {
       ),
     );
   }
+
+
 }
 
 _showContactList(BuildContext context) {
