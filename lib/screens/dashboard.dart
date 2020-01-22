@@ -21,7 +21,7 @@ class Dashboard extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.asset('images/bytebank_logo.png'),
+                  child: Image.asset('images/gringotts_logo.png'),
                 ),
                 Container(
                   height: 120,
